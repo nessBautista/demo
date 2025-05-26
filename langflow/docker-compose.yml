@@ -1,0 +1,20 @@
+services:
+  langflow:
+    image: langflowai/langflow:latest
+    container_name: langflow-custom
+    user: "0:0"
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./install-packages.sh:/install-packages.sh:ro
+      - ./custom_components:/app/custom_components
+      - langflow_venv:/app/.venv
+      - langflow_site_packages:/usr/local/lib/python3.12/site-packages
+    environment:
+      - LANGFLOW_COMPONENTS_PATH=/app/custom_components
+      - PYTHONPATH=/app/.venv/lib/python3.12/site-packages:/usr/local/lib/python3.12/site-packages
+    entrypoint: ["/bin/bash", "/install-packages.sh"]
+
+volumes:
+  langflow_venv:
+  langflow_site_packages:
